@@ -273,7 +273,7 @@ class AuOrgObjectRenderer(Renderer):
             if self.view == 'alternates':
                 return Response(self._render_alternates_view(), mimetype=self.format)
             elif self.view == 'auorg':
-                return self._render_auorg_view()
+                return Response(self._render_auorg_view(), mimetype=self.format)
 
     def _render_auorg_view(self):
         if self.format in Renderer.RDF_MIMETYPES:
