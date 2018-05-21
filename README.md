@@ -1,4 +1,4 @@
-# Organisations Register
+# AU Organisations Register
 This is a demonstration system only: 'test.' in web addresses will be removed in production
 
 This is the Linked Data version of directory.gov.au. It allows web requests to be made for directory.gov.au content (no search, direct links only!) and responds with either simple web pages (HTML) or Resource Description Framework (RDF), machine-readable, data. Internet protocol content negotiation can be used to request the different formats.
