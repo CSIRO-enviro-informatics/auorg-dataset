@@ -16,19 +16,10 @@ if __name__ == '__main__':
                         format='%(asctime)s %(levelname)s %(filename)s:%(lineno)s %(message)s')
 
     # generate the RDF sitemap
-    ''''
-        * call each Rule's endpoint
-            * if it returns a reg view
-                * read that for a local superregister property
-                    * add knowledge to graph for file storage
-            * else 
-                * it must be the R of R
-    
-    '''
-
-
     thread = pyldapi.setup(app, conf.URI_BASE)
 
+    # runn the Flask app
     app.run(debug=conf.DEBUG, use_reloader=False)
 
+    # complete the RDF sitemap
     thread.join()

@@ -1,6 +1,6 @@
 from flask import Blueprint, request
-from model import sparql
 from flask_paginate import Pagination
+from model import sparql
 from pyldapi import *
 
 
