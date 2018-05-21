@@ -1,3 +1,5 @@
 flask
+pyldapi
 rdflib
+rdflib-jsonld
 requests

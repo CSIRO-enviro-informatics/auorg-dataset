@@ -1,8 +1,7 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, request
 from model import sparql
 from flask_paginate import Pagination
 from pyldapi import *
-import _config as conf
 
 
 routes = Blueprint('controller', __name__)
