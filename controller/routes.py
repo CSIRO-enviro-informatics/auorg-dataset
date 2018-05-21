@@ -2,6 +2,7 @@ from flask import Blueprint, request
 from flask_paginate import Pagination
 from model import sparql
 from pyldapi import *
+import _config as conf
 
 
 routes = Blueprint('controller', __name__)
@@ -29,7 +30,8 @@ def reg():
         request,
         'http://localhost:5000/',
         'Register of Registers',
-        'The master register of this API'
+        'The master register of this API',
+        conf.APP_DIR + '/rofr.ttl'
     ).render()
 
 

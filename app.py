@@ -16,7 +16,7 @@ if __name__ == '__main__':
                         format='%(asctime)s %(levelname)s %(filename)s:%(lineno)s %(message)s')
 
     # generate the RDF sitemap
-    thread = pyldapi.setup(app, conf.URI_BASE)
+    thread = pyldapi.setup(app, conf.APP_DIR, conf.URI_BASE)
 
     # runn the Flask app
     app.run(debug=conf.DEBUG, use_reloader=False)
