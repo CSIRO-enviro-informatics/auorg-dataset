@@ -233,7 +233,7 @@ def object():
                 'AU Org View',
                 'A view of basic properties of main classes in the AU Org Ontology',
                 ['text/html'] + Renderer.RDF_MIMETYPES,
-                'tex/turtle',
+                'text/turtle',
                 namespace='http://test.linked.data.gov.au/def/auorg#'
             )
     }
