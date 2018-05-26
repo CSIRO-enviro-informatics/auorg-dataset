@@ -281,9 +281,8 @@ class AuOrgObjectRenderer(Renderer):
             return sparql.object_describe(self.uri)
         else:  # only the HTML format left
             deets = sparql.instance_details(self.uri)
-
+            print(deets)
             return render_template(
                 'object.html',
-                label=deets['label'],
-                comment=deets.get('comment')
+                deets=deets
             )

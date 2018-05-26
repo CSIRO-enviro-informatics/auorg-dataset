@@ -1,8 +1,25 @@
 {% extends "page_layout.html" %}
 
         {% block content %}
-        <h1>{{ label }}</h1>
-        {%  if comment is not none %}
-        <p>{{ comment }}</p>
+        <h1>{{ deets['label'] }}</h1>
+        {%  if deets['desc'] is not none %}
+        <p>{{ desc }}</p>
         {% endif -%}
+        <table>
+            {%  if deets['classification'] is not none %}
+            <tr>
+                <th>Classification</th><td>{{ deets['classification'] }}</td>
+            </tr>
+            {% endif -%}
+            {%  if deets['portfolio'] is not none %}
+            <tr>
+                <th>Portfolio</th><td><a href="{{ deets['portfolio'] }}">{{ deets['portfolio'].split('/')[-1] }}</a></td>
+            </tr>
+            {% endif -%}
+            {%  if deets['created'] is not none %}
+            <tr>
+                <th>Created</th><td>{{ deets['created'] }}</td>
+            </tr>
+            {% endif -%}
+        </table>
         {% endblock %}

@@ -129,10 +129,14 @@ def instance_details(uri):
     q = '''
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
         PREFIX dct: <http://purl.org/dc/terms/>
-        SELECT ?label ?comment
+        PREFIX auorg: <http://linked.data.gov.au/def/ont/auorg#>
+        SELECT *
         WHERE {{
-            <{0[uri]}> rdfs:label ?label .
-            OPTIONAL {{ <{0[uri]}> dct:description ?comment . }}
+            <{0[uri]}>  rdfs:label ?label .
+            OPTIONAL {{ <{0[uri]}> dct:description ?desc . }}
+            OPTIONAL {{ <{0[uri]}> auorg:classification ?classification . }}
+            OPTIONAL {{ <{0[uri]}> auorg:portfolio ?portfolio . }}
+            OPTIONAL {{ <{0[uri]}> dct:created ?created . }}
         }}
     '''.format({'uri': uri})
 
@@ -144,12 +148,14 @@ def instance_details(uri):
         return None
 
     d = d[0]
-    label = d.get('label').get('value')
-    desc = d.get('desc').get('value') if d.get('desc') else None
-    return {
-        'label': label,
-        'desc': desc
+    deets = {
+        'label': d.get('label').get('value'),
+        'desc': d.get('desc').get('value') if d.get('desc') else None,
+        'classification': d.get('classification').get('value') if d.get('classification') else None,
+        'portfolio': d.get('portfolio').get('value') if d.get('portfolio') else None,
+        'created': d.get('created').get('value') if d.get('created') else None
     }
+    return deets
 
 
 def object_describe(uri):
