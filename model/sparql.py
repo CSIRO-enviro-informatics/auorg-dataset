@@ -158,7 +158,7 @@ def instance_details(uri):
     return deets
 
 
-def object_describe(uri):
+def object_describe(uri, rdf_format):
     q = 'DESCRIBE <{}>'.format(uri)
     # convert the result from the SPARQL query to turtle and back to tidy it up for viewing
     triples = query_turtle(q)
@@ -169,7 +169,10 @@ def object_describe(uri):
     g.bind('auorg', Namespace('http://linked.data.gov.au/def/ont/auorg#'))
     g.bind('dct', Namespace('http://purl.org/dc/terms/'))
 
-    return g.serialize(format='turtle')
+    if rdf_format in ['application/rdf+json', 'application/json']:
+        return g.serialize(format='json-ld')
+    else:
+        return g.serialize(format=rdf_format)
 
 
 if __name__ == '__main__':

@@ -283,11 +283,11 @@ class AuOrgObjectRenderer(Renderer):
 
     def _render_auorg_view(self):
         if self.format in Renderer.RDF_MIMETYPES:
-            rdf = sparql.object_describe(self.uri)
+            rdf = sparql.object_describe(self.uri, self.format)
             if rdf is None:
                 return Response('No triples contain that URI as subject', status=404, mimetype='text/plain')
             else:
-                return rdf
+                return Response(rdf, mimetype=self.format)
         else:  # only the HTML format left
             deets = sparql.instance_details(self.uri)
             if deets is None:
