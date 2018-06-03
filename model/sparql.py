@@ -144,7 +144,7 @@ def instance_details(uri):
     if d is None:
         return None
     d = d.get('results').get('bindings')
-    if len(d) < 1:  # handle no result
+    if d is None or len(d) < 1:  # handle no result
         return None
 
     d = d[0]
@@ -161,7 +161,11 @@ def instance_details(uri):
 def object_describe(uri):
     q = 'DESCRIBE <{}>'.format(uri)
     # convert the result from the SPARQL query to turtle and back to tidy it up for viewing
-    g = Graph().parse(data=query_turtle(q).decode('utf-8'), format='turtle')
+    triples = query_turtle(q)
+    if len(triples) < 1 or triples is None:
+        return None
+    g = Graph().parse(data=triples.decode('utf-8'), format='turtle')
+
     g.bind('auorg', Namespace('http://linked.data.gov.au/def/ont/auorg#'))
     g.bind('dct', Namespace('http://purl.org/dc/terms/'))
 

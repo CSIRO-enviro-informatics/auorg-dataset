@@ -28,7 +28,7 @@ def about():
 def reg():
     return RegisterOfRegistersRenderer(
         request,
-        'http://localhost:5000/',
+        'http://localhost:5000/reg/',
         'Register of Registers',
         'The master register of this API',
         conf.APP_DIR + '/rofr.ttl'
@@ -70,7 +70,7 @@ def boards():
         l = str(org['label']['value'])
         register.append((o, l))
 
-    return RegisterRenderer(
+    resp = RegisterRenderer(
         request,
         'http://localhost:5000/board/',
         'Register of Boards',
@@ -79,7 +79,9 @@ def boards():
         ['http://test.linked.data.gov.au/def/auorg#Board'],
         total,
         super_register='http://localhost:5000/reg/'
-    ).render()
+    )
+
+    return Response(resp.render(), headers=resp.headers)
 
 
 @routes.route('/org/')
@@ -225,7 +227,10 @@ def portfolios():
 
 @routes.route('/object')
 def object():
-    uri = request.args.get('uri')
+    if request.args.get('uri') is not None and str(request.args.get('uri')).startswith('http'):
+        uri = request.args.get('uri')
+    else:
+        return Response('You must supply the URI if a resource with ?uri=...', status=400, mimetype='text/plain')
 
     # declare the one auorg view for all the individuals in this API
     views = {
@@ -272,17 +277,23 @@ class AuOrgObjectRenderer(Renderer):
             return Response(self.vf_error, status=406, mimetype='text/plain')
         else:
             if self.view == 'alternates':
-                return Response(self._render_alternates_view(), mimetype=self.format)
+                return self._render_alternates_view()
             elif self.view == 'auorg':
-                return Response(self._render_auorg_view(), mimetype=self.format)
+                return self._render_auorg_view()
 
     def _render_auorg_view(self):
         if self.format in Renderer.RDF_MIMETYPES:
-            return sparql.object_describe(self.uri)
+            rdf = sparql.object_describe(self.uri)
+            if rdf is None:
+                return Response('No triples contain that URI as subject', status=404, mimetype='text/plain')
+            else:
+                return rdf
         else:  # only the HTML format left
             deets = sparql.instance_details(self.uri)
-            print(deets)
-            return render_template(
-                'object.html',
-                deets=deets
-            )
+            if deets is None:
+                return Response('That URI yielded no data', status=404, mimetype='text/plain')
+            else:
+                return render_template(
+                    'object.html',
+                    deets=deets
+                )
