@@ -14,7 +14,8 @@
     <p>This API is only a small demonstrator. It will hopefully be replaced within the 2018/2019 Financial Year by a more robust tool that delivers RDF data for directory.gov.au data perhaps incorporated within directory.gov.au itself. The work to built this more robust tool is now being discussed by the <a href="https://www.finance.gov.au">Department of Finance</a> (owners of directory.gov.au) and the CSIRO.</p>
 
     <h3>Persistent Identifier Demonstration</h3>
-    <p>This API demonstrates persistent identifiers (PIDs) in action but, since it's a demo, includes the word <code>test</code> in all PIDs.</p>
+    <p>This API demonstrates persistent identifiers (PIDs) in action but, since it's a demo, it includes the word <code>test</code> in all PIDs that would be removed for a production system.</p>
+    <p>PID web addresses used to make requests for content from this API are long-term stable and can thus can be quoted and used without fear that they will become broken links.</p>
     <p>For Geoscience Australia (GA):</p>
     <ul>
         <li>Instead of <a href="https://www.directory.gov.au/portfolios/industry-innovation-and-science-part-jobs-and-innovation-portfolio/geoscience-australia">https://www.directory.gov.au/portfolios/industry-innovation-and-science-part-jobs-and-innovation-portfolio/geoscience-australia</a> - the human-readable, directory.gov.au address</li>
@@ -57,6 +58,26 @@
     <ul>
         <li><a href="http://test.linked.data.gov.au/org/O-000887?_view=alternates">http://test.linked.data.gov.au/org/O-000887<strong>?_view=alternates</strong></a></li>
     </ul>
+
+    <h3>Registers</h3>
+    <h4>Top-level registers</h4>
+    <p>This API delivers 4 top-level Registers which are:</p>
+    <ul>
+        <li><a href="{{ url_for('controller.boards') }}">board/</a> - a list of <a href="http://test.linked.data.gov.au/def/auorg#">auorg:Board</a>s</li>
+        <li><a href="{{ url_for('controller.organisations') }}">org/</a> - a list of <a href="https://www.w3.org/TR/vocab-org/#class-organization">org:Organization</a>s</li>
+        <li><a href="{{ url_for('controller.persons') }}">person/</a> - a list of <a href="http://xmlns.com/foaf/0.1/Person">foaf:Person</a>s</li>
+        <li><a href="{{ url_for('controller.portfolios') }}">portfolio/</a> - a list of <a href="http://test.linked.data.gov.au/def/auorg#Portfolio">auorg:Portfolio</a>s</li>
+    </ul>
+    <p>These 4 top-level registers have been assigned PIDs that are 'top-level' in terms of their placement within <code>linked.data.gov.au</code> which is due to their recognition by the AGLDWG. The AGLDWG can share top-level reigsters between multiple datasets so that <code>/org/</code> could draw instances of <code>org:Organization</code> from this API and others. For the moment it doesn't.</p>
+
+    <h4>Secondary Registers</h4>
+    <p>Other, less significant, registers of things delivered by this API that have not yet been recognised by the AGLDWG would be delivered at .../dataset/auorg/{REGISTER-NAME}/. For example, the director.gov.au 'non-Board' objects would be at .../dataset/auorg/nonboard/.</p>
+    <p>In test mode, these secondary registers are not available.</p>
+
+    <h4>Register of Registers</h4>
+    <p>In addition to the 4 main registers that this API delivers, it also has a top-level register that lists all other registers:</p>
+    <ul><li><a href="{{ url_for('controller.reg') }}">reg/</a></li></ul>
+    <p>Automated clients, such as Linked Data Web Crawlers, can use this Register of Registers to discover all this API's content.</p>
 
     <h3>Contacts</h3>
     <p>This prototype tool was developed by:</p>
