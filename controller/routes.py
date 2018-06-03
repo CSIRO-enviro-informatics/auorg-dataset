@@ -43,11 +43,6 @@ def boards():
     total = sparql.total_orgs()
     if total is None:
         return Response('data store is unreachable', status=500, mimetype='text/plain')
-    pagination = Pagination(page=page, total=total, per_page=per_page, record_name='Boards')
-
-    # translate pagination vars to query
-    limit = pagination.per_page
-    offset = (pagination.page - 1) * pagination.per_page
 
     # get list of org URIs and labels from the triplestore
     q = '''
@@ -61,7 +56,7 @@ def boards():
         ORDER BY ?label
         LIMIT {}
         OFFSET {}
-    '''.format(limit, offset)
+    '''.format(per_page, (page - 1) * per_page)
     register = []
     orgs = sparql.query(q)['results']['bindings']
 
@@ -70,7 +65,7 @@ def boards():
         l = str(org['label']['value'])
         register.append((o, l))
 
-    resp = RegisterRenderer(
+    return RegisterRenderer(
         request,
         'http://localhost:5000/board/',
         'Register of Boards',
@@ -79,9 +74,7 @@ def boards():
         ['http://test.linked.data.gov.au/def/auorg#Board'],
         total,
         super_register='http://localhost:5000/reg/'
-    )
-
-    return Response(resp.render(), headers=resp.headers)
+    ).render()
 
 
 @routes.route('/org/')
