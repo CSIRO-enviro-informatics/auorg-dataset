@@ -107,7 +107,7 @@ venv.bak/
 
 .idea/
 .DS_Store
-_config/
+_conf/
 
 # data file for Register of Registers
 rofr.ttl

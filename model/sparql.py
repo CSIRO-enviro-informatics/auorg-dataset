@@ -1,6 +1,6 @@
 import requests
 import json
-import _config as conf
+import _conf as conf
 from rdflib import Graph, Namespace
 
 

@@ -2,7 +2,8 @@ from flask import Blueprint, request
 from flask_paginate import Pagination
 from model import sparql
 from pyldapi import *
-import _config as conf
+from model.auorg import AuOrgObjectRenderer
+import _conf as conf
 
 
 routes = Blueprint('controller', __name__)
@@ -244,49 +245,3 @@ def object():
         views,
         'auorg'
     ).render()
-
-
-class AuOrgObjectRenderer(Renderer):
-    def __init__(
-            self,
-            request,
-            uri,
-            label,
-            comment,
-            views,
-            default_view_token
-            ):
-        super().__init__(
-            request,
-            uri,
-            views,
-            default_view_token
-        )
-        self.label = label
-        self.comment = comment
-
-    def render(self):
-        if hasattr(self, 'vf_error'):
-            return Response(self.vf_error, status=406, mimetype='text/plain')
-        else:
-            if self.view == 'alternates':
-                return self._render_alternates_view()
-            elif self.view == 'auorg':
-                return self._render_auorg_view()
-
-    def _render_auorg_view(self):
-        if self.format in Renderer.RDF_MIMETYPES:
-            rdf = sparql.object_describe(self.uri, self.format)
-            if rdf is None:
-                return Response('No triples contain that URI as subject', status=404, mimetype='text/plain')
-            else:
-                return Response(rdf, mimetype=self.format)
-        else:  # only the HTML format left
-            deets = sparql.instance_details(self.uri)
-            if deets is None:
-                return Response('That URI yielded no data', status=404, mimetype='text/plain')
-            else:
-                return render_template(
-                    'object.html',
-                    deets=deets
-                )
